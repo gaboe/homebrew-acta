@@ -1,0 +1,28 @@
+{
+  "##": [
+    "The hash is filled in by packaging/publish.sh from the archive the release workflow's",
+    "windows job built; a placeholder here means no Windows release has been published yet and",
+    "`scoop install` would fail at the download.",
+    "Nothing here has run on a Windows machine. The binary links and is a valid PE32+ console",
+    "executable, which is all anyone has checked.",
+    "Both artifacts live on one release in gaboe/homebrew-acta, which is the public half of the",
+    "distribution: acta-diurna is private, so nothing downloadable can live there."
+  ],
+  "version": "0.1.1",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.1/acta-0.1.1-x64.zip",
+      "hash": "6ef094117a5766c202e51920e40e6389a848d81209f7e314a2373c556c995634"
+    }
+  },
+  "bin": "acta.exe",
+  "depends": ["ffmpeg"],
+  "notes": [
+    "Windows support is untested: no part of this has run on a Windows machine.",
+    "acta needs whisper-cli on PATH. Scoop has no package for it, but whisper.cpp publishes one:",
+    "take whisper-cli.exe out of whisper-bin-x64.zip on its releases page and put it on PATH.",
+    "Run `acta setup` to download and verify the Whisper and VAD models.",
+    "Run `acta serve --install` to create the per-user logon task, then send back what",
+    "`acta report` prints — that path has never been executed."
+  ]
+}
