@@ -1,14 +1,14 @@
 class Acta < Formula
   desc "Local meeting recorder and transcriber"
   homepage "https://acta-diurna.gaboe.xyz"
-  url "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.19/acta-0.1.19-arm64.tar.gz"
-  version "0.1.19"
+  url "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.20/acta-0.1.20-arm64.tar.gz"
+  version "0.1.20"
   # Regenerate this whenever the binary changes: `packaging/release.sh` prints it, and both the
   # binary and the archive are reproducible, so the same commit always gives the same value.
   # The archive only became reproducible once the script stopped letting gzip stamp the time of
   # compression into its header — until then a rebuild of one commit gave a new SHA every time,
   # and the mismatch would have surfaced as a failed install rather than as an error at release.
-  sha256 "dfa821cfa0153ef0589ee27061154aa2a7b9992e212e9baccb5b9fd189c2e9d9"
+  sha256 "14ef4c72d849204cac569503869f04aeffd82f568622e00fad34f01fbe691a98"
   depends_on "ffmpeg"
   depends_on "whisper-cpp"
 
