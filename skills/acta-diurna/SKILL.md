@@ -2,7 +2,7 @@
 name: acta-diurna
 description: Acta Diurna records Google Meet calls locally and writes speaker-labelled transcripts. Use to install or set up Acta, to add or check a licence, to read a meeting transcript, to turn a meeting into tasks and carry them out, to follow live requests during a call, or to diagnose a failed recording.
 metadata:
-  status: macos-verified-windows-published-untested
+  status: macos-verified-windows-0.1.20-known-blockers
 ---
 
 # Acta Diurna
@@ -13,19 +13,19 @@ Start with **Setup** when `acta` is missing, has no valid licence, or the user a
 
 ## Setup
 
-macOS on Apple Silicon is verified. Windows x64 packages are published, but installation, startup, capture, and transcription have not been tested on a Windows machine. Tell Windows users this before following the Windows procedure. Intel Macs and Windows ARM are unsupported. Both platforms use Google Meet in Chrome and the published Chrome extension.
+macOS on Apple Silicon is verified. Windows x64 0.1.20 was tested on Windows 11 on 2026-10-12: capture and transcription worked only after the workarounds under **Windows 0.1.20 known blockers**. Tell Windows users this before following the Windows procedure. Intel Macs and Windows ARM are unsupported. Both platforms use Google Meet in Chrome and the published Chrome extension.
 
 ### Installation gate
 
-Inspect the operating system, CPU architecture, and whether `acta` is already installed. Report those findings. On macOS Apple Silicon, follow the macOS procedure. On Windows x64, explain the untested status and follow the Windows procedure. For an unsupported platform, report the missing build and stop. Use the published packages and instructions below.
+Inspect the operating system, CPU architecture, and whether `acta` is already installed. Report those findings. On macOS Apple Silicon, follow the macOS procedure. On Windows x64, explain the known blockers and follow the Windows procedure. For an unsupported platform, report the missing build and stop. Use the published packages and instructions below.
 
 | Distribution detail | Current value |
 | --- | --- |
 | Public Homebrew tap / release | [`gaboe/acta`](https://github.com/gaboe/homebrew-acta), public release [`v0.1.20`](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.20). arm64 artifact `acta-0.1.20-arm64.tar.gz`, SHA-256 `14ef4c72d849204cac569503869f04aeffd82f568622e00fad34f01fbe691a98`; Windows x64 artifact `acta-0.1.20-x64.zip`, SHA-256 `42e98b42143076e0ef4e1040874747ab77834d9addca26e66521116c277b8ab6`. Built by CI run `37319544406` on 2026-10-05; the hashes match its downloaded artifacts. |
 | macOS Apple Silicon installer | Homebrew tap `gaboe/acta`, formula `acta`; use the verified procedure below. There is no separate installer URL. |
 | macOS installation procedure | Verified today: `brew trust gaboe/acta`, `brew tap gaboe/acta`, `brew install acta`, `acta setup`; `brew trust` must come first. |
-| Windows x64 installer | Published, and never run on Windows. `acta-0.1.20-x64.zip` is on the same release as the macOS tarball, built by the repository's release workflow on a `windows-latest` runner and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
-| Windows installation procedure | Follow the Windows x64 procedure below. Scoop installs ffmpeg; install whisper-cli separately. Startup and the per-user logon task remain untested on Windows. |
+| Windows x64 installer | Published, and tested once on Windows 11 with workarounds. `acta-0.1.20-x64.zip` is on the same release as the macOS tarball, built by the repository's release workflow on a `windows-latest` runner and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
+| Windows installation procedure | Follow the Windows x64 procedure below. Scoop installs ffmpeg; install whisper-cli separately. `acta serve --install` fails on 0.1.20 without admin rights. |
 | Chrome extension distribution | [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc), unlisted and reachable by this link. Published extension 0.1.19 was confirmed on 2026-10-06 by downloading its CRX anonymously; it includes the Meet audio capture fix. CLI 0.1.20 is compatible. The release also carries an unpacked ZIP as a fallback. Store and unpacked installations share the same extension id, so use only one at a time. |
 
 ### macOS Apple Silicon procedure
@@ -43,15 +43,17 @@ acta setup
 
 ### Windows x64 procedure
 
-This procedure has not been tested on Windows. Verify each command's result before continuing. If Scoop is missing, follow the [official Scoop installation instructions](https://scoop.sh/) first.
+Verify each command's result before continuing.
 
-1. Install Acta and its ffmpeg dependency:
+1. Install Acta and its ffmpeg dependency. With Scoop:
 
    ```powershell
    scoop install https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json
    acta --version
    ffmpeg -version
    ```
+
+   Without Scoop, install by hand. Scoop is not on Windows by default, and its installer pipes a downloaded script into PowerShell, which many agents refuse to run. Download `acta-0.1.20-x64.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.20) and check its SHA-256 against the distribution table. Extract it to `%LOCALAPPDATA%\Programs\acta` and add that folder to the user's PATH. Install ffmpeg with `winget install Gyan.FFmpeg` if `ffmpeg -version` fails. Open a new PowerShell window and run the two version checks above.
 
 2. Download `whisper-bin-x64.zip` from the [official whisper.cpp binary release b5130](https://github.com/ggml-org/whisper.cpp/releases/tag/b5130). This CPU build does not require CUDA. Extract the whole archive to a permanent folder, preserving the bundled DLLs. Add the folder containing `whisper-cli.exe` to the user's PATH, open a new PowerShell window, and verify it:
 
@@ -66,7 +68,16 @@ This procedure has not been tested on Windows. Verify each command's result befo
    acta doctor
    ```
 
-Continue with the shared extension, licence, and startup steps below. Report any failed check. A successful download does not prove that recording or transcription works on Windows.
+Continue with the shared extension, licence, and startup steps below. Report any failed check.
+
+#### Windows 0.1.20 known blockers
+
+Fixes are committed for the next release. Until it is published, 0.1.20 needs these workarounds, and each has to be removed after the upgrade:
+
+- `acta live` stops with `Error: opening /dev/urandom`. Create `C:\dev\urandom` holding 1 MiB of random bytes and start Acta from drive C:.
+- The extension shows `ERROR running date` and reconnects in a loop. Copy `date.exe`, `msys-2.0.dll`, `msys-intl-8.dll` and `msys-iconv-2.dll` from `C:\Program Files\Git\usr\bin` into the Acta folder. `acta ls` still fails afterwards.
+- `acta serve --install` prints nothing and installs nothing; the error is in `serve.log`. Start `acta live` by hand after each sign-in.
+- Transcription on the CPU build falls behind with many speakers; a 35-minute call with 9 channels lagged 11 to 15 minutes. Keep Acta running until the transcript finishes.
 
 ### Install the Chrome extension on either platform
 
@@ -106,7 +117,7 @@ Verify that `acta license` names the expected owner and expiry. Licence verifica
 acta serve --install
 ```
 
-On Windows this creates a per-user logon task. That path is untested. Run `acta doctor` and `acta report` after startup and inspect their results.
+On Windows 0.1.20 this fails without admin rights; see the known blockers. Run `acta doctor` and `acta report` after startup and inspect their results.
 
 For a user-authorized test, open a Google Meet call with the extension loaded and run:
 
@@ -122,7 +133,7 @@ On either supported platform, verify diagnostics, the extension connection, and 
 
 ## Commands
 
-Real Google Meet capture and transcription are verified on macOS Apple Silicon, including remote audio while the user's microphone is muted. Windows x64 runtime behavior remains unverified. Microsoft Teams and Zoom are unsupported. Confirm syntax with `acta <command> --help` when the installed version differs from this release.
+Real Google Meet capture and transcription are verified on macOS Apple Silicon, including remote audio while the user's microphone is muted. On Windows x64, capture and the draft transcript are verified on 0.1.20 with the workarounds above. Microsoft Teams and Zoom are unsupported. Confirm syntax with `acta <command> --help` when the installed version differs from this release.
 
 | Need | Command |
 | --- | --- |
