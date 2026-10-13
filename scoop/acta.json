@@ -8,11 +8,11 @@
     "Both artifacts live on one release in gaboe/homebrew-acta, which is the public half of the",
     "distribution: acta-diurna is private, so nothing downloadable can live there."
   ],
-  "version": "0.1.22",
+  "version": "0.1.23",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.22/acta-0.1.22-x64.zip",
-      "hash": "1cef69b5e1e6b4c7092ee0adbdefdf32ab6923baa059209963d01db52648a2a8"
+      "url": "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.23/acta-0.1.23-x64.zip",
+      "hash": "2d5232b700f740b9987386102a59dac1f8c32b33b9656a19ebbbe299dac90185"
     }
   },
   "bin": "acta.exe",
