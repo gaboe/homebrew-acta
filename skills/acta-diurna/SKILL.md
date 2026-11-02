@@ -13,20 +13,20 @@ Start with **Setup** when `acta` is missing, has no valid licence, or the user a
 
 ## Setup
 
-macOS on Apple Silicon is verified. Windows x64 0.1.21 was verified on Windows 11 on 2026-10-12: install without admin rights, background service, Meet capture and the final transcript, with no workarounds. A retest of 0.1.22 on 2026-10-13 confirmed its fixes and found the archive missing the user's own microphone; 0.1.23 fixes that; 0.1.24 keeps the daemon answering while it finishes a long meeting, 0.1.25 stops it cleanly within launchd's limit, 0.1.26 finishes on its next start a transcript it was stopped in the middle of, 0.1.27 finishes the final transcript that 0.1.26 stopped at a timestamp check, and 0.1.28 adds `acta new` for in-person meetings from the Mac microphone and makes `acta prune` remove the audio of transcribed meetings. None of these has run on Windows yet. Intel Macs and Windows ARM are unsupported. Both platforms use Google Meet in Chrome and the published Chrome extension.
+macOS on Apple Silicon is verified. Windows x64 0.1.21 was verified on Windows 11 on 2026-10-12: install without admin rights, background service, Meet capture and the final transcript, with no workarounds. A retest of 0.1.22 on 2026-10-13 confirmed its fixes and found the archive missing the user's own microphone; 0.1.23 fixes that; 0.1.24 keeps the daemon answering while it finishes a long meeting, 0.1.25 stops it cleanly within launchd's limit, 0.1.26 finishes on its next start a transcript it was stopped in the middle of, 0.1.27 finishes the final transcript that 0.1.26 stopped at a timestamp check, and 0.1.29 adds `acta new` for in-person meetings from the Mac microphone and makes `acta prune` remove the audio of transcribed meetings. None of these has run on Windows yet. Intel Macs and Windows ARM are unsupported. Both platforms use Google Meet in Chrome and the published Chrome extension.
 
 ### Installation gate
 
-Inspect the operating system, CPU architecture, and whether `acta` is already installed. Report those findings. On macOS Apple Silicon, follow the macOS procedure. On Windows x64, say that 0.1.21 was verified there and 0.1.28 not yet, and follow the Windows procedure. For an unsupported platform, report the missing build and stop. Use the published packages and instructions below.
+Inspect the operating system, CPU architecture, and whether `acta` is already installed. Report those findings. On macOS Apple Silicon, follow the macOS procedure. On Windows x64, say that 0.1.21 was verified there and 0.1.29 not yet, and follow the Windows procedure. For an unsupported platform, report the missing build and stop. Use the published packages and instructions below.
 
 | Distribution detail | Current value |
 | --- | --- |
-| Public Homebrew tap / release | [`gaboe/acta`](https://github.com/gaboe/homebrew-acta), public release [`v0.1.28`](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.28). arm64 artifact `acta-0.1.28-arm64.tar.gz`, SHA-256 `d65803ef080f3bc8d0d83736c3ea460c8e6891a42b40128cdac34995f1fb5bd3`; Windows x64 artifact `acta-0.1.28-x64.zip`, SHA-256 `3cc2643e38fb6577f189c3ad1868e0bf062f1457c300884353e52cf3f043bae2`. Built by CI run `39794389545` on 2026-10-22; the hashes match its downloaded artifacts. |
+| Public Homebrew tap / release | [`gaboe/acta`](https://github.com/gaboe/homebrew-acta), public release [`v0.1.29`](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.29). arm64 artifact `acta-0.1.29-arm64.tar.gz`, SHA-256 `543c20141dab4d7747eabfd3eee9b79316367445cad90ada11de1c62c42f9a3b`; Windows x64 artifact `acta-0.1.29-x64.zip`, SHA-256 `1ff3592b9656e2f031169ff440eb75a6b217e49025f1a2e16b3ee2fbf37a93f1`. Built by CI run `41489851247` on 2026-11-02; the hashes match its downloaded artifacts. |
 | macOS Apple Silicon installer | Homebrew tap `gaboe/acta`, formula `acta`; use the verified procedure below. There is no separate installer URL. |
 | macOS installation procedure | Verified today: `brew trust gaboe/acta`, `brew tap gaboe/acta`, `brew install acta`, `acta setup`; `brew trust` must come first. |
-| Windows x64 installer | Published. 0.1.21 was verified on Windows 11 and 0.1.22 retested there; 0.1.28 has not run on Windows. `acta-0.1.28-x64.zip` is on the same release as the macOS tarball, built by the repository's release workflow on a `windows-latest` runner and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
+| Windows x64 installer | Published. 0.1.21 was verified on Windows 11 and 0.1.22 retested there; 0.1.29 has not run on Windows. `acta-0.1.29-x64.zip` is on the same release as the macOS tarball, built by the repository's release workflow on a `windows-latest` runner and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
 | Windows installation procedure | Follow the Windows x64 procedure below. Scoop installs ffmpeg; install whisper-cli separately. `acta serve --install` adds a per-user logon entry without admin rights. |
-| Chrome extension distribution | [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc), unlisted and reachable by this link. Extension 0.1.23 records the user's own microphone in `recording.wav` and keeps the archive's last chunk; with 0.1.22 and earlier the archive holds only the other participants. It was submitted to the Store on 2026-10-13 and is in review, so the listing may still serve an older version. The 0.1.28 release carries the same extension code as an unpacked ZIP, to load now. Store and unpacked installations share the same extension id, so use only one at a time. |
+| Chrome extension distribution | [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc), unlisted and reachable by this link. Extension 0.1.23 records the user's own microphone in `recording.wav` and keeps the archive's last chunk; with 0.1.22 and earlier the archive holds only the other participants. It was submitted to the Store on 2026-10-13 and is in review, so the listing may still serve an older version. The 0.1.29 release carries the same extension code as an unpacked ZIP, to load now. Store and unpacked installations share the same extension id, so use only one at a time. |
 
 ### macOS Apple Silicon procedure
 
@@ -53,7 +53,7 @@ Verify each command's result before continuing.
    ffmpeg -version
    ```
 
-   Without Scoop, install by hand. Scoop is not on Windows by default, and its installer pipes a downloaded script into PowerShell, which many agents refuse to run. Download `acta-0.1.28-x64.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.28) and check its SHA-256 against the distribution table. Extract it to `%LOCALAPPDATA%\Programs\acta` and add that folder to the user's PATH. Install ffmpeg with `winget install Gyan.FFmpeg` if `ffmpeg -version` fails. Open a new PowerShell window and run the two version checks above.
+   Without Scoop, install by hand. Scoop is not on Windows by default, and its installer pipes a downloaded script into PowerShell, which many agents refuse to run. Download `acta-0.1.29-x64.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.29) and check its SHA-256 against the distribution table. Extract it to `%LOCALAPPDATA%\Programs\acta` and add that folder to the user's PATH. Install ffmpeg with `winget install Gyan.FFmpeg` if `ffmpeg -version` fails. Open a new PowerShell window and run the two version checks above.
 
 2. Download `whisper-bin-x64.zip` from the [official whisper.cpp binary release b5130](https://github.com/ggml-org/whisper.cpp/releases/tag/b5130). This CPU build does not require CUDA. On a machine with an NVIDIA GPU, offer `whisper-cublas-12.4.0-bin-x64.zip` from the same release instead: the CPU build fell 11 to 15 minutes behind a 35-minute call with nine channels. On Windows 11 with an RTX 5090 it brought a 20-second window from 15.8 s to 2.5 s. On an RTX 50-series card the first run takes about a minute while the driver compiles its kernels; later runs start at once. Extract the whole archive to a permanent folder, preserving the bundled DLLs. Add the folder containing `whisper-cli.exe` to the user's PATH, open a new PowerShell window, and verify it:
 
@@ -84,7 +84,7 @@ Runs that 0.1.20 created empty on every reconnect stay in `acta ls`; remove them
 
 Install from the [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc). Chrome updates Store installations automatically.
 
-If the Store cannot be used, download `acta-extension-0.1.28-unpacked.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.28). Extract it to a permanent folder. Open `chrome://extensions`, enable Developer mode, choose Load unpacked, and select the extracted folder containing `manifest.json`. Keep that folder because Chrome reads it at startup. Chrome may warn about developer mode or disable an unpacked extension after restart.
+If the Store cannot be used, download `acta-extension-0.1.29-unpacked.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.29). Extract it to a permanent folder. Open `chrome://extensions`, enable Developer mode, choose Load unpacked, and select the extracted folder containing `manifest.json`. Keep that folder because Chrome reads it at startup. Chrome may warn about developer mode or disable an unpacked extension after restart.
 
 After installing or updating the extension, open a new Meet call. For an existing call, reload Meet and rejoin when the user can tolerate the interruption. Capture hooks must load before Meet creates its audio decoder.
 
@@ -92,7 +92,7 @@ After installing or updating the extension, open a new Meet call. For an existin
 
 If Acta is already installed, use `acta license` and the installed version's help to check its licence. Otherwise ask whether the user already owns one. Do not ask an existing licence holder to buy again, and do not treat a failed licence check as proof that no licence exists.
 
-A valid licence is required to start a new capture. When the user confirms they need one, explain in their language: “To start recording with Acta, you need a licence first. The official purchase link is not available yet; contact the site owner. Once you have a `.licence` file, tell me and we can continue with setup.”
+Recording does not need a licence. Acta saves audio and waits to transcribe until a valid licence is installed. When the user confirms they need a licence, explain in their language: “You can record now and add a licence later. Acta needs a valid licence to transcribe the recording. The official purchase link is not available yet; contact the site owner. Once you have a `.licence` file, tell me and we can continue with setup.”
 
 Official Polar checkout links:
 
@@ -101,7 +101,7 @@ Official Polar checkout links:
 
 While these links are pending, say that the purchase link is not available yet and direct the user to the site owner. Stop the purchase workflow there. Never send a placeholder URL as a working checkout. Once published, show the options and their current prices and billing terms before directing the user to their chosen checkout.
 
-The user completes payment in Polar. Do not request card details in chat. After they return with a `.licence` file, install it with `acta license add <path>` and verify it with `acta license` before starting a new capture. The same licence also travels as a one-line key beginning `ACTA1-`, and `acta license add <key>` installs from that; the argument is read as a file when a file of that name exists and as a key otherwise. The key is about 250 characters because it carries the signature itself — there is no shorter code, because a short code would have to be looked up on a server and no such server exists. The file is plain text, about 200 bytes, carries an Ed25519 signature over the fields above it, and is a bearer file not tied to a machine. Verification is offline: there is no activation server and nothing is contacted. A message saying payment is complete is not licence verification. If the checkout or activation details are still pending, report that missing step instead of inventing it.
+The user completes payment in Polar. Do not request card details in chat. After they return with a `.licence` file, install it with `acta license add <path>` and verify it with `acta license` before transcription. The user can record before installing it. The same licence also travels as a one-line key beginning `ACTA1-`, and `acta license add <key>` installs from that; the argument is read as a file when a file of that name exists and as a key otherwise. The key is about 250 characters because it carries the signature itself — there is no shorter code, because a short code would have to be looked up on a server and no such server exists. The file is plain text, about 200 bytes, carries an Ed25519 signature over the fields above it, and is a bearer file not tied to a machine. Verification is offline: there is no activation server and nothing is contacted. A message saying payment is complete is not licence verification. If the checkout or activation details are still pending, report that missing step instead of inventing it.
 
 ### Add the licence and start Acta
 
@@ -149,7 +149,7 @@ Real Google Meet capture and transcription are verified on macOS Apple Silicon, 
 | Use the calendar (optional) | Acta asks the `gws` CLI for Google Calendar events, to show the next meeting and record meeting titles and attendee names. Without `gws` Acta records and transcribes the same; nothing needs to be set up |
 | Limit language detection | `acta config languages cs,sk`; `auto` allows any. Pin one speaker with `acta config speaker-language <who> <code>` |
 | Open the local panel | `acta panel` prints a token-bearing local URL; keep that URL on this computer |
-| Check health | `acta doctor`, `acta report`, `acta logs <run>` |
+| Diagnose a failure | `acta report --json`, then `acta logs [run]`; use `acta doctor` only for an active inference problem |
 | Send feedback to the author | `acta feedback <message>`; it carries only the message |
 
 ## Work with meetings
@@ -175,9 +175,17 @@ The step is complete when every request in the transcript is accounted for as a 
 
 Name speaker channels with `acta name`. Add recurring names, product names, and jargon with `acta vocab add`, then write a corrected copy with `acta canon <run>`. The original transcript stays unchanged.
 
-### Report a failure
+### Diagnose a failed recording
 
-Ask the user for the output of `acta report`. It holds the version, platform, licence state, and counts, and no meeting content. Add `acta logs <run>` for extension problems.
+For a recording or dictation failure, run `acta report --json` first. It reads a bounded local
+report without opening a recording or transcript. Run `acta logs [run]` second to inspect typed
+events. Omit `run` when the failure happened before Acta created a recording. Use `acta doctor` only
+when inference is failing now.
+
+Use event codes and coverage to state what the evidence shows. Treat missing events as unknown.
+The CLI cannot read Chrome history while the extension is disconnected. A missing clean-exit event
+does not prove a crash, an out-of-memory kill, or an operating-system cause. Diagnostics stay on
+the machine unless the user chooses to share the report. `acta feedback` is unchanged.
 
 ## Privacy
 
