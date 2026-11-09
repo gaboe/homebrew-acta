@@ -1,15 +1,52 @@
 ---
 name: acta-diurna
-description: Acta Diurna records Google Meet calls locally and writes speaker-labelled transcripts. Use to install or set up Acta, to add or check a licence, to read a meeting transcript, to turn a meeting into tasks and carry them out, to follow live requests during a call, or to diagnose a failed recording.
+description: Install and set up the Acta Diurna desktop app or CLI on Mac and Windows. Use for dictation setup and failures, licences, local Google Meet recording, reading transcripts, turning meetings into tasks, or following live requests during a call.
 metadata:
   status: macos-verified-windows-0.1.21-verified
 ---
 
 # Acta Diurna
 
-Acta Diurna is a local application and Chrome extension. Together they record a Google Meet call, transcribe it on the user's computer, and store a Markdown transcript with speaker names and timestamps. The agent reads that transcript with the `acta` CLI and works with it alongside the project context it already has.
+Acta Diurna is for Mac and Windows. Meetings are transcribed on the user's computer into Markdown with speaker names and timestamps. The Chrome extension captures Google Meet audio. The daemon receives it and runs transcription. The `acta` CLI gives agents access to diagnostics and transcripts. The desktop app provides a meeting interface and dictation into other apps. Dictation uses local Whisper or ElevenLabs. Linux is unsupported. Check the platform and build limits below before installing.
 
-Start with **Setup** when `acta` is missing, has no valid licence, or the user asks to install it. Otherwise go to **Work with meetings**.
+For desktop installation or dictation, start with **Desktop app and dictation**. For CLI installation or a missing licence, use **Setup**. For transcript tasks, use **Work with meetings**.
+
+## Desktop app and dictation
+
+### Get and install the desktop app
+
+Inspect the OS, CPU architecture, existing Acta installation, and app version first. Mac desktop packaging targets Apple Silicon and macOS 13 or later. Windows x64 has a published CLI, daemon, and extension path below. The v0.1.29 release has no Windows desktop installer. Report that limit and offer the Windows CLI procedure. Do not describe Windows desktop or dictation as verified. Intel Macs, Windows ARM, and Linux have no supported installation path here.
+
+The [public v0.1.29 release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.29) includes [acta-desktop-0.1.29-arm64-unsigned.zip](https://github.com/gaboe/homebrew-acta/releases/download/v0.1.29/acta-desktop-0.1.29-arm64-unsigned.zip) and its checksum sidecar. Asset availability was checked on 2026-11-09. This archive has an ad-hoc signature. It has no Developer ID signature and is not notarized. Availability is not proof of first-run or dictation success. Check the current release assets before offering a newer build. If an asset is absent, report it as unavailable.
+
+1. Download the ZIP and its matching checksum sidecar from that release. Calculate its SHA-256 with `shasum -a 256 <zip>` and compare it with the sidecar and the release asset digest. In a source checkout, also compare with `packaging/desktop-release.json`. Stop if they differ.
+2. Extract the ZIP. Move `Acta.app` to Applications or the user-owned `~/Applications` folder. Keep an existing app until the replacement is verified.
+3. Open Acta. If macOS blocks this unsigned build, explain its signing state and let the user decide whether to allow it in System Settings > Privacy & Security. Keep Gatekeeper enabled. Report a blocked launch as incomplete setup.
+4. Use the bundled CLI at `<installed Acta.app>/Contents/MacOS/acta` for the checks below when `acta` is not on PATH. Check its version before using a separate Homebrew CLI. Installing the app does not add a shell command to PATH.
+
+For an authorized source build on an Apple Silicon Mac, the repository also has `bash desktop/install.sh`. It builds and installs `~/Applications/Acta.app`, replacing that app and stopping its running process. It uses a local signing certificate when available, otherwise ad-hoc signing. It is not a public binary installer or proof of notarization. Prefer the published archive for normal installation.
+
+The app bundles the CLI and Whisper binaries. Its meeting views use the local daemon. Follow the shared licence and background-service steps below when needed, using the matching CLI. Homebrew alone installs the CLI, not the desktop app. The Chrome extension is needed for Google Meet capture. Dictation and in-person microphone recording do not need that extension.
+
+### First-run setup
+
+These steps describe current source capabilities. Confirm that each control exists in the installed build. A shared version number does not prove that an older archive includes later source changes. Report missing controls instead of claiming that setup succeeded.
+
+1. Open Settings. Select the interface language. Set the dictation language separately to Slovak, Czech, English, or automatic detection. Meeting language uses `acta config languages` below.
+2. For dictation or in-person recording, allow Acta microphone access. For the dictation shortcut and text insertion, allow Accessibility in System Settings > Privacy & Security. Follow the app permission rows and confirm their resulting state. This desktop permission flow requests Microphone and Accessibility. It does not request Screen Recording or system-audio access. For Meet capture, follow Chrome and the extension prompts for the installed version. Report any extra permission request by its actual name and purpose.
+3. For Meet, open the Chrome extension section and follow **Install the Chrome extension on either platform** below. Keep extension connection checks separate from app launch checks.
+4. Open the licence section. Add the user's `.licence` file, or use the CLI licence procedure below. Verify owner and expiry. If purchase details are missing, follow **Purchase when a licence is missing**. Recording can precede a licence; meeting transcription requires a valid licence.
+5. Open dictation settings. Set the shortcut and enable push to talk if wanted. The source default is Right Option + Space. With push to talk enabled, hold the shortcut to dictate and release it to insert text. Another key cancels dictation. Check for shortcut conflicts before saving.
+6. Choose local Whisper to keep dictation inference on the computer. Check model readiness and report missing runtime or model steps. For ElevenLabs Scribe v2 realtime, explain that dictation audio leaves the computer for ElevenLabs. Let the user enter their own API key directly in Settings and select it. Keep keys out of chat, logs, and reports. Check the installed build's key-storage text. Older builds use macOS Keychain; current source migrates those keys to a file readable only by that macOS user. Do not claim Keychain storage for every build.
+7. Set the action after dictation and clipboard retention. Review Dictations history and the keep-dictation-audio choice with the user. Dictionary word pairs correct dictated text. Disabling audio retention does not delete existing audio. Keep existing history and audio unless the user asks to delete them.
+
+### Verify without recording the user
+
+Open the app and check its version, daemon connection, licence state, permission rows, saved shortcut, engine, and language. Run `acta report --json` with the matching CLI. Report failed or unknown checks. Inspect the extension connection only if Chrome is available. Do not start a meeting, press the dictation shortcut, request a live microphone sample, or open stored recordings for this check.
+
+Call this setup checked without capture. State that microphone capture, dictation insertion, and meeting transcription remain unverified. Use **Verify setup before calling it complete** only when the user authorizes a recording test. A dictation test also needs the user's authorization and a text field they choose.
+
+For dictation failure, run `acta report --json` first and `acta logs` second. Inspect desktop and dictation event codes, engine, permissions, shortcut state, and coverage. Use `acta doctor` only for a current inference failure. If an older build lacks dictation diagnostics, report that gap. A missing event means unknown. Do not read Dictations history or retained audio unless the user authorizes it. Preview diagnostics before sharing them. Do not send a report through `acta feedback` without an explicit request.
 
 ## Setup
 
@@ -22,7 +59,7 @@ Inspect the operating system, CPU architecture, and whether `acta` is already in
 | Distribution detail | Current value |
 | --- | --- |
 | Public Homebrew tap / release | [`gaboe/acta`](https://github.com/gaboe/homebrew-acta), public release [`v0.1.29`](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.29). arm64 artifact `acta-0.1.29-arm64.tar.gz`, SHA-256 `543c20141dab4d7747eabfd3eee9b79316367445cad90ada11de1c62c42f9a3b`; Windows x64 artifact `acta-0.1.29-x64.zip`, SHA-256 `1ff3592b9656e2f031169ff440eb75a6b217e49025f1a2e16b3ee2fbf37a93f1`. Built by CI run `41489851247` on 2026-11-02; the hashes match its downloaded artifacts. |
-| macOS Apple Silicon installer | Homebrew tap `gaboe/acta`, formula `acta`; use the verified procedure below. There is no separate installer URL. |
+| macOS Apple Silicon installer | Homebrew tap `gaboe/acta`, formula `acta`; use the verified procedure below. For the desktop ZIP, use **Desktop app and dictation**. |
 | macOS installation procedure | Verified today: `brew trust gaboe/acta`, `brew tap gaboe/acta`, `brew install acta`, `acta setup`; `brew trust` must come first. |
 | Windows x64 installer | Published. 0.1.21 was verified on Windows 11 and 0.1.22 retested there; 0.1.29 has not run on Windows. `acta-0.1.29-x64.zip` is on the same release as the macOS tarball, built by the repository's release workflow on a `windows-latest` runner and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
 | Windows installation procedure | Follow the Windows x64 procedure below. Scoop installs ffmpeg; install whisper-cli separately. `acta serve --install` adds a per-user logon entry without admin rights. |
@@ -118,7 +155,7 @@ Verify that `acta license` names the expected owner and expiry. Licence verifica
 acta serve --install
 ```
 
-On Windows this adds a per-user logon entry and starts the daemon; it needs no admin rights. That path has not run on Windows yet. Run `acta doctor` and `acta report` after startup and inspect their results.
+On Windows this adds a per-user logon entry and starts the daemon; it needs no admin rights. The 0.1.29 startup path has not run on Windows yet. Run `acta doctor` and `acta report` after startup and inspect their results.
 
 For a user-authorized test, open a Google Meet call with the extension loaded and run:
 
@@ -182,6 +219,22 @@ report without opening a recording or transcript. Run `acta logs [run]` second t
 events. Omit `run` when the failure happened before Acta created a recording. Use `acta doctor` only
 when inference is failing now.
 
+With a run selected, `history.events` contains only events for that recording.
+`global_context.events` holds events without a run identity and keeps the
+`unavailable_global_context_only` label. These events are context, not evidence for that run.
+The process keeps up to 256 random recording identities in memory. The diagnostics worker saves each to `diagnostic-id.json`.
+Identities created before diagnostics starts stay pending until startup queues them.
+After that bound, new recordings use their numeric directory identity without an identity file.
+A nonstandard directory beyond the bound remains unattributed.
+Recording and startup continue while diagnostic writes are pending. Treat queue acceptance as unconfirmed persistence.
+Legacy `meet-<number>` directories use their generated number as a fallback.
+Older events and other run names without a saved identity remain unattributed. Extension batches remain global
+because a delivered batch can include events from before the current recording.
+Daemon and desktop restart aggregates expose `starts` and `restarts` with the newest startup
+and failure facts. Earlier repeated process events can be folded into that aggregate.
+Each failure still expires after seven days. If temporary replacement space is unavailable,
+aggregation preserves existing evidence and records a diagnostic write error in the live loss counters.
+
 Use event codes and coverage to state what the evidence shows. Treat missing events as unknown.
 The CLI cannot read Chrome history while the extension is disconnected. A missing clean-exit event
 does not prove a crash, an out-of-memory kill, or an operating-system cause. Diagnostics stay on
@@ -189,4 +242,4 @@ the machine unless the user chooses to share the report. `acta feedback` is unch
 
 ## Privacy
 
-Recordings and transcripts stay on the user's computer. The user decides which transcripts an agent reads and what leaves the machine. Record only meetings the user asks to record. Keep existing runs; delete one with `acta rm` only when the user names it.
+Meeting recordings and transcripts stay on the user's computer. Local dictation stays on the computer. ElevenLabs dictation sends audio to ElevenLabs with the user's API key. The user decides which transcripts an agent reads and what leaves the machine. Record only meetings the user asks to record. Keep existing runs; delete one with `acta rm` only when the user names it.
