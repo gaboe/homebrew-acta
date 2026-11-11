@@ -1,28 +1,45 @@
 {
   "##": [
-    "The hash is filled in by packaging/publish.sh from the archive the release workflow's",
-    "windows job built; a placeholder here means no Windows release has been published yet and",
-    "`scoop install` would fail at the download.",
-    "Nothing here has run on a Windows machine. The binary links and is a valid PE32+ console",
-    "executable, which is all anyone has checked.",
-    "Both artifacts live on one release in gaboe/homebrew-acta, which is the public half of the",
-    "distribution: acta-diurna is private, so nothing downloadable can live there."
+    "The release workflow builds the CLI and unsigned desktop app together on Windows.",
+    "Whisper v1.9.5 build b5454 uses the commit in packaging/whisper-pin.json.",
+    "packaging/publish.sh updates both hashes from the Acta archive and the Whisper pin."
   ],
-  "version": "0.1.30",
+  "version": "0.1.31",
+  "description": "Local meeting recording and transcription with a desktop app and CLI",
+  "homepage": "https://acta-diurna.gaboe.xyz",
+  "license": "Proprietary,MIT",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.30/acta-0.1.30-x64.zip",
-      "hash": "cc156f084b475836b29bc7fb12ba023a7ada2f4f48c0ed6eaaf58996ccbb615b"
+      "url": [
+        "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.31/acta-0.1.31-x64.zip",
+        "https://github.com/ggml-org/whisper.cpp/releases/download/b5454/whisper-bin-x64.zip"
+      ],
+      "hash": [
+        "82b52096c838f336804f216d7fbc38cb968fd437ede8ae1d468131fdcf76bd31",
+        "6ba69e3482d7826214f90a6a9c84ca07782aec1e1d0c6a7c30c994fd5d816ccb"
+      ],
+      "extract_dir": [
+        "",
+        "Release"
+      ]
     }
   },
   "bin": "acta.exe",
-  "depends": ["ffmpeg"],
+  "depends": [
+    "ffmpeg"
+  ],
   "notes": [
-    "Windows support is untested: no part of this has run on a Windows machine.",
-    "acta needs whisper-cli on PATH. Scoop has no package for it, but whisper.cpp publishes one:",
-    "take whisper-cli.exe out of whisper-bin-x64.zip on its releases page and put it on PATH.",
+    "Scoop installs the CLI, unsigned desktop app, ffmpeg, and pinned Whisper binaries.",
     "Run `acta setup` to download and verify the Whisper and VAD models.",
-    "Run `acta serve --install` to create the per-user logon task, then send back what",
-    "`acta report` prints — that path has never been executed."
+    "Run `acta serve --install` to start the daemon now and at sign-in.",
+    "Open Acta from the Start menu. Send `acta report` output when reporting problems.",
+    "Scoop installation and updates still need testing on a Windows PC."
+  ],
+  "env_add_path": ".",
+  "shortcuts": [
+    [
+      "acta-desktop.exe",
+      "Acta"
+    ]
   ]
 }
