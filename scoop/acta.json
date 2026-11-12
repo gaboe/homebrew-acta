@@ -4,18 +4,18 @@
     "Whisper v1.9.5 build b5454 uses the commit in packaging/whisper-pin.json.",
     "packaging/publish.sh updates both hashes from the Acta archive and the Whisper pin."
   ],
-  "version": "0.1.31",
+  "version": "0.1.32",
   "description": "Local meeting recording and transcription with a desktop app and CLI",
   "homepage": "https://acta-diurna.gaboe.xyz",
   "license": "Proprietary,MIT",
   "architecture": {
     "64bit": {
       "url": [
-        "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.31/acta-0.1.31-x64.zip",
+        "https://github.com/gaboe/homebrew-acta/releases/download/v0.1.32/acta-0.1.32-x64.zip",
         "https://github.com/ggml-org/whisper.cpp/releases/download/b5454/whisper-bin-x64.zip"
       ],
       "hash": [
-        "82b52096c838f336804f216d7fbc38cb968fd437ede8ae1d468131fdcf76bd31",
+        "ae00d0a346608b1ed1a873da7340842bc23a172831e3b24f11d6cb4da061b99d",
         "6ba69e3482d7826214f90a6a9c84ca07782aec1e1d0c6a7c30c994fd5d816ccb"
       ],
       "extract_dir": [
