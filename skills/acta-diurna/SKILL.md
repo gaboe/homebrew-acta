@@ -17,7 +17,7 @@ For desktop installation or dictation, start with **Desktop app and dictation**.
 
 Inspect the OS, CPU architecture, existing Acta installation, and app version first. Mac desktop packaging targets Apple Silicon and macOS 13 or later. Windows x64 has a published CLI, daemon, and extension path below. The Windows x64 Scoop package also installs an unsigned desktop app with a Start menu entry. Do not describe Windows desktop or dictation as verified. Intel Macs, Windows ARM, and Linux have no supported installation path here.
 
-The [public v0.1.33 release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.33) includes [acta-desktop-0.1.33-arm64-unsigned.zip](https://github.com/gaboe/homebrew-acta/releases/download/v0.1.33/acta-desktop-0.1.33-arm64-unsigned.zip) and its checksum sidecar. Asset availability was checked on 2026-11-09. This archive has an ad-hoc signature. It has no Developer ID signature and is not notarized. Availability is not proof of first-run or dictation success. Check the current release assets before offering a newer build. If an asset is absent, report it as unavailable.
+The [public v0.1.34 release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.34) includes [acta-desktop-0.1.34-arm64-unsigned.zip](https://github.com/gaboe/homebrew-acta/releases/download/v0.1.34/acta-desktop-0.1.34-arm64-unsigned.zip) and its checksum sidecar. Asset availability was checked on 2026-11-09. This archive has an ad-hoc signature. It has no Developer ID signature and is not notarized. Availability is not proof of first-run or dictation success. Check the current release assets before offering a newer build. If an asset is absent, report it as unavailable.
 
 1. Download the ZIP and its matching checksum sidecar from that release. Calculate its SHA-256 with `shasum -a 256 <zip>` and compare it with the sidecar and the release asset digest. In a source checkout, also compare with `packaging/desktop-release.json`. Stop if they differ.
 2. Extract the ZIP. Move `Acta.app` to Applications or the user-owned `~/Applications` folder. Keep an existing app until the replacement is verified.
@@ -54,16 +54,16 @@ macOS on Apple Silicon is verified. Windows x64 0.1.21 was verified on Windows 1
 
 ### Installation gate
 
-Inspect the operating system, CPU architecture, and whether `acta` is already installed. Report those findings. On macOS Apple Silicon, follow the macOS procedure. On Windows x64, say that 0.1.21 was verified there and 0.1.33 only in a Windows 11 VM, and follow the Windows procedure. For an unsupported platform, report the missing build and stop. Use the published packages and instructions below.
+Inspect the operating system, CPU architecture, and whether `acta` is already installed. Report those findings. On macOS Apple Silicon, follow the macOS procedure. On Windows x64, say that 0.1.21 was verified there and 0.1.34 only in a Windows 11 VM, and follow the Windows procedure. For an unsupported platform, report the missing build and stop. Use the published packages and instructions below.
 
 | Distribution detail | Current value |
 | --- | --- |
-| Public Homebrew tap / release | [`gaboe/acta`](https://github.com/gaboe/homebrew-acta), public release [`v0.1.33`](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.33). arm64 artifact `acta-0.1.33-arm64.tar.gz`, SHA-256 `9a0b73510d8b34a84024ad2580e5c1fbe0fea8439bd1f9e5bce704dbe06f6d21`; Windows x64 artifact `acta-0.1.33-x64.zip`, SHA-256 `72d9fdbf4f48a2f01c490354b3ed75dd6f4560d351f442c6e50af5d492761960`. Built locally on 2026-11-12 and published from that build. |
+| Public Homebrew tap / release | [`gaboe/acta`](https://github.com/gaboe/homebrew-acta), public release [`v0.1.34`](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.34). arm64 artifact `acta-0.1.34-arm64.tar.gz`, SHA-256 `d1dcd36a53710e0a329359203442e96249f0d54ab4f2233dcd9d65e8b4e147e5`; Windows x64 artifact `acta-0.1.34-x64.zip`, SHA-256 `3f891e683ec4339663731b5ad0a2105edd36f4c259e685b8641e4d94883c68c7`. Built locally on 2026-11-12 and published from that build. |
 | macOS Apple Silicon installer | Homebrew tap `gaboe/acta`, formula `acta`; use the verified procedure below. For the desktop ZIP, use **Desktop app and dictation**. |
 | macOS installation procedure | Verified today: `brew trust gaboe/acta`, `brew tap gaboe/acta`, `brew install acta`, `acta setup`; `brew trust` must come first. |
-| Windows x64 installer | Published. 0.1.21 was verified on Windows 11 and 0.1.22 retested there; 0.1.33 was installed, updated and tested in a Windows 11 VM, not yet on a Windows PC. `acta-0.1.33-x64.zip` is on the same release as the macOS tarball, built locally and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
+| Windows x64 installer | Published. 0.1.21 was verified on Windows 11 and 0.1.22 retested there; 0.1.34 was installed, updated and tested in a Windows 11 VM, not yet on a Windows PC. `acta-0.1.34-x64.zip` is on the same release as the macOS tarball, built locally and confirmed to be a PE32+ console executable. The Scoop manifest is at `https://raw.githubusercontent.com/gaboe/homebrew-acta/main/scoop/acta.json`. Only x64; there is no Windows-on-ARM build. |
 | Windows installation procedure | Follow the Windows x64 procedure below. Scoop installs ffmpeg; install whisper-cli separately. `acta serve --install` adds a per-user logon entry without admin rights. |
-| Chrome extension distribution | [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc), unlisted and reachable by this link. Extension 0.1.23 records the user's own microphone in `recording.wav` and keeps the archive's last chunk; with 0.1.22 and earlier the archive holds only the other participants. It was submitted to the Store on 2026-10-13 and is in review, so the listing may still serve an older version. The 0.1.33 release carries the same extension code as an unpacked ZIP, to load now. Store and unpacked installations share the same extension id, so use only one at a time. |
+| Chrome extension distribution | [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc), unlisted and reachable by this link. Extension 0.1.23 records the user's own microphone in `recording.wav` and keeps the archive's last chunk; with 0.1.22 and earlier the archive holds only the other participants. It was submitted to the Store on 2026-10-13 and is in review, so the listing may still serve an older version. The 0.1.34 release carries the same extension code as an unpacked ZIP, to load now. Store and unpacked installations share the same extension id, so use only one at a time. |
 
 ### macOS Apple Silicon procedure
 
@@ -90,13 +90,15 @@ Verify each command's result before continuing.
    ffmpeg -version
    ```
 
-   Without Scoop, install by hand. Scoop is not on Windows by default, and its installer pipes a downloaded script into PowerShell, which many agents refuse to run. Download `acta-0.1.33-x64.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.33) and check its SHA-256 against the distribution table. Extract it to `%LOCALAPPDATA%\Programs\acta` and add that folder to the user's PATH. Install ffmpeg with `winget install Gyan.FFmpeg` if `ffmpeg -version` fails. Open a new PowerShell window and run the two version checks above.
+   Without Scoop, install by hand. Scoop is not on Windows by default, and its installer pipes a downloaded script into PowerShell, which many agents refuse to run. Download `acta-0.1.34-x64.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.34) and check its SHA-256 against the distribution table. Extract it to `%LOCALAPPDATA%\Programs\acta` and add that folder to the user's PATH. Install ffmpeg with `winget install Gyan.FFmpeg` if `ffmpeg -version` fails. Open a new PowerShell window and run the two version checks above.
 
-2. Download `whisper-bin-x64.zip` from the [official whisper.cpp binary release b5130](https://github.com/ggml-org/whisper.cpp/releases/tag/b5130). This CPU build does not require CUDA. On a machine with an NVIDIA GPU, offer `whisper-cublas-12.4.0-bin-x64.zip` from the same release instead: the CPU build fell 11 to 15 minutes behind a 35-minute call with nine channels. On Windows 11 with an RTX 5090 it brought a 20-second window from 15.8 s to 2.5 s. On an RTX 50-series card the first run takes about a minute while the driver compiles its kernels; later runs start at once. Extract the whole archive to a permanent folder, preserving the bundled DLLs. Add the folder containing `whisper-cli.exe` to the user's PATH, open a new PowerShell window, and verify it:
+2. Whisper. A Scoop install already has the pinned CPU build of whisper.cpp, so there is nothing to download. Without Scoop, download `whisper-bin-x64.zip` from the [official whisper.cpp binary release b5454](https://github.com/ggml-org/whisper.cpp/releases/tag/b5454), extract the whole archive to a permanent folder, preserving the bundled DLLs, add the folder containing `whisper-cli.exe` to the user's PATH, open a new PowerShell window, and verify it:
 
    ```powershell
    whisper-cli --help
    ```
+
+   On a machine with an NVIDIA driver, Acta also downloads the CUDA build of Whisper (685 MB, from the same release, checked against its SHA-256) and runs Whisper on the GPU. `acta setup` and `acta update` start that download, and the Acta daemon starts it in the background when it starts and the engine is missing, so the CPU build keeps transcribing until the download is complete. Tell the user about the 685 MB before running `acta setup`. `acta setup --no-gpu` skips it and Acta remembers; `acta setup --gpu-only` turns it on again. The engine takes about 1.2 GB under `%USERPROFILE%\acta\whisper`, and a Scoop uninstall leaves it there. On an RTX 50-series card the first start takes about a minute while the driver compiles its kernels; later starts are quick. Earlier, a 20-second window took 15.8 s on the CPU build and 2.5 s on an RTX 5090 with the cuBLAS 12.4 build of release b5130, measured by hand. Check what runs with `acta status`, whose `whisper:` line reads `GPU (<card>)`, `CPU (GPU engine downloading; ...)`, `CPU (GPU engine install failed: <reason>)` or `CPU (GPU failed: <reason>)`. After a failure, `acta doctor` asks the GPU again, and a failed download is retried by the next `acta update`, `acta setup --gpu-only` or daemon start. Whisper never stops working on a GPU problem: it falls back to the CPU.
 
 3. Download the models and check the transcription runtime:
 
@@ -121,7 +123,7 @@ Runs that 0.1.20 created empty on every reconnect stay in `acta ls`; remove them
 
 Install from the [Chrome Web Store listing](https://chromewebstore.google.com/detail/iidpmegkbdilgbmglnnfealgicfjnglc). Chrome updates Store installations automatically.
 
-If the Store cannot be used, download `acta-extension-0.1.33-unpacked.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.33). Extract it to a permanent folder. Open `chrome://extensions`, enable Developer mode, choose Load unpacked, and select the extracted folder containing `manifest.json`. Keep that folder because Chrome reads it at startup. Chrome may warn about developer mode or disable an unpacked extension after restart.
+If the Store cannot be used, download `acta-extension-0.1.34-unpacked.zip` from the [public release](https://github.com/gaboe/homebrew-acta/releases/tag/v0.1.34). Extract it to a permanent folder. Open `chrome://extensions`, enable Developer mode, choose Load unpacked, and select the extracted folder containing `manifest.json`. Keep that folder because Chrome reads it at startup. Chrome may warn about developer mode or disable an unpacked extension after restart.
 
 After installing or updating the extension, open a new Meet call. For an existing call, reload Meet and rejoin when the user can tolerate the interruption. Capture hooks must load before Meet creates its audio decoder.
 
@@ -155,9 +157,9 @@ Verify that `acta license` names the expected owner and expiry. Licence verifica
 acta serve --install
 ```
 
-On Windows this adds a per-user logon entry and starts the daemon; it needs no admin rights. The 0.1.33 startup path ran in a Windows 11 VM, not yet on a Windows PC. Run `acta doctor` and `acta report` after startup and inspect their results.
+On Windows this adds a per-user logon entry and starts the daemon; it needs no admin rights. The 0.1.34 startup path ran in a Windows 11 VM, not yet on a Windows PC. Run `acta doctor` and `acta report` after startup and inspect their results.
 
-To update a Scoop installation of 0.1.33 or later, run `acta update`. Acta stops, Scoop installs the new version, and Acta starts again. Run no other acta command until `Get-Content "$env:TEMP\acta-update.log" -Tail 1` starts with `acta update: done`. Do not run `scoop update acta` while Acta runs, because Scoop refuses. To update 0.1.32 or earlier, stop Acta first:
+To update a Scoop installation of 0.1.34 or later, run `acta update`. Acta stops, Scoop installs the new version, and Acta starts again. Run no other acta command until `Get-Content "$env:TEMP\acta-update.log" -Tail 1` starts with `acta update: done`. Do not run `scoop update acta` while Acta runs, because Scoop refuses. To update 0.1.32 or earlier, stop Acta first:
 
 ```powershell
 acta serve --uninstall
@@ -195,7 +197,7 @@ Real Google Meet capture and transcription are verified on macOS Apple Silicon, 
 | Use the calendar (optional) | Acta reads Google Calendar events to show the next meeting and record meeting titles and attendee names. Connect it in the desktop app under Settings > Calendar > Connect Google, or let Acta ask the `gws` CLI. On macOS it can also read macOS Calendar. Without a calendar Acta records and transcribes the same; nothing needs to be set up |
 | Limit language detection | `acta config languages cs,sk`; `auto` allows any. Pin one speaker with `acta config speaker-language <who> <code>` |
 | Open the local panel | `acta panel` prints a token-bearing local URL; keep that URL on this computer |
-| Diagnose a failure | `acta report --json`, then `acta logs [run]`; use `acta doctor` only for an active inference problem |
+| Diagnose a failure | `acta report --json`, then `acta logs [run]`; use `acta doctor` only for an active inference problem. On Windows with an NVIDIA GPU, the `whisper:` line of `acta status` says whether Whisper runs on the GPU or why not, and `acta doctor` asks the GPU again after a failure |
 | Send feedback to the author | `acta feedback <message>`; it carries only the message |
 
 ## Work with meetings
